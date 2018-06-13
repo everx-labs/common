@@ -1,11 +1,11 @@
 # sdk-emulator
 Assembler and Node emulator 
 
-##Prerequsities
+## Prerequsities
 
 https://www.rust-lang.org/en-US/install.html
 
-##To Build & Run:
+## To Build & Run:
 
 ```make 
 ```
