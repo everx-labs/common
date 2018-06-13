@@ -7,5 +7,7 @@ https://www.rust-lang.org/en-US/install.html
 
 ## To Build & Run:
 
-```make 
 ```
+make
+```
+
