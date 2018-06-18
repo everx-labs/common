@@ -8,6 +8,11 @@ https://www.rust-lang.org/en-US/install.html
 ## To Build & Run:
 
 ```
-make
+cargo build
+cargo run
 ```
 
+## To Test:
+```
+cargo test
+```
