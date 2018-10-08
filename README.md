@@ -5,14 +5,14 @@ Assembler and Node emulator
 
 https://www.rust-lang.org/en-US/install.html
 
-## To Build & Run use:
+## To Build & Run:
 
 ```
 cargo build
 cargo run
 ```
 
-## To Test use:
+## To Test:
 ```
 cargo test
 ```
