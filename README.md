@@ -19,7 +19,8 @@ cargo test
 
 ## Compile smart contract:
 
-After build project you can use "compile" util from target/release/compile or target/debug/compile for compile your contract\n
+After build project you can use **compile** util from target/release/compile or target/debug/compile for compile your contract
+
 Commands (by unix example):
 ```
 ./compile your_bytecode_file your_cells_file
@@ -28,7 +29,7 @@ Commands (by unix example):
 
 ## Execute smart contract:
 
-After build project you can use "execute" util from target/release/execute or target/debug/execute for execute your contract\n
+After build project you can use **execute** util from target/release/execute or target/debug/execute for execute your contract
 Commands (by unix example):
 ```
 ./execute your_contract_file
