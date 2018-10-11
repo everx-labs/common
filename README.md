@@ -22,12 +22,10 @@ cargo test
 After build project you can use **compile** util from `target/release/compile` or `target/debug/compile` for compile your contract
 
 Commands (by unix example):
-```
 - Compile
-  ./compile your_bytecode_file your_cells_file
+  `./compile your_bytecode_file your_cells_file`
 - Get help
-  ./compile --help
-```
+  `./compile --help`
 
 ## Execute smart contract:
 
