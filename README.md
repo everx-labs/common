@@ -22,7 +22,7 @@ cargo test
 After build project you can use **compile** util from `target/release/compile` or `target/debug/compile` for compile your contract
 
 Commands (by unix example):
-- Compile
+- Compile contract
   `./compile your_bytecode_file your_cells_file`
 - Get help
   `./compile --help`
@@ -32,7 +32,7 @@ Commands (by unix example):
 After build project you can use **execute** util from `target/release/execute` or `target/debug/execute` for execute your contract
 
 Commands (by unix example):
-```
-- ./execute your_contract_file
-- ./execute --help
-```
+- Execute contract
+  `./execute your_contract_file`
+- Get help
+  `./execute --help`
