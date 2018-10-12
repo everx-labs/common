@@ -34,5 +34,7 @@ After build project you can use **execute** util from `target/release/execute` o
 Commands (by unix example):
 - Execute contract
   `./execute your_contract_file`
+  - Execute contract with stack items (strings)
+    `./execute your_contract_file --params stack-items`
 - Get help
   `./execute --help`
