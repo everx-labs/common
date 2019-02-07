@@ -1,7 +1,7 @@
-# sdk-emulator
-Assembler and Node emulator
+# TVM
+TON Virtual Machine implementation
 
-## Prerequsities
+## Prerequisites
 
 https://www.rust-lang.org/en-US/install.html
 
