@@ -16,6 +16,12 @@ cargo run
 ```
 cargo test
 ```
+## Features:
+`--features`
+`ci_run` - run long tests
+`fift_check` - check test results using fift binaries should be near test executable
+`log_file` - ouput log to file
+`verbose` - show execution process, don't forget to call `logger::init()`
 
 ## Compile smart contract:
 
