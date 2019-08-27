@@ -13,6 +13,12 @@ appenders:
     encoder:
       pattern: "{d} - {l}: {m}{n}"
 
+  tvm_logfile:
+    kind: file
+    path: "log/tvm.log"
+    encoder:
+      pattern: "{l}: {m}{n}"
+
 root:
   level: warn
   appenders:
@@ -47,7 +53,7 @@ loggers:
   tvm:
     level: warn
     appenders:
-      - stdout
+      - tvm_logfile
 
   #next targets for poa
   poa:
