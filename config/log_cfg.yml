@@ -17,7 +17,7 @@ appenders:
     kind: file
     path: "log/tvm.log"
     encoder:
-      pattern: "{l}: {m}{n}"
+      pattern: "{m}{n}"
 
 root:
   level: warn
@@ -51,7 +51,7 @@ loggers:
 
   # tvm messages
   tvm:
-    level: warn
+    level: trace
     appenders:
       - tvm_logfile
 
