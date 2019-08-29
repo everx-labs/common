@@ -1,11 +1,12 @@
 # Scan this file for changes every 30 seconds
+# https://docs.rs/log4rs/0.8.3/log4rs/encode/pattern/index.html
 refresh_rate: 30 seconds
 
 appenders:
   stdout:
     kind: console
     encoder:
-      pattern: "{l}: {m}{n}"
+      pattern: "{l} [{t}] {I}: {m}{n}"
 
   logfile:
     kind: file
