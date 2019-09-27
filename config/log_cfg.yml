@@ -21,14 +21,14 @@ appenders:
       pattern: "{m}{n}"
 
 root:
-  level: warn
+  level: debug
   appenders:
     - logfile
 
 loggers:
   # node messages
   node:
-    level: warn
+    level: debug
     appenders:
       - stdout
 
