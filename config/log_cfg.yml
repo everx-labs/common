@@ -56,24 +56,6 @@ loggers:
     appenders:
       - tvm_logfile
 
-  #next targets for poa
-  poa:
-    level: warn
-    appenders:
-      - stdout
-  engine:
-    level: warn
-    appenders:
-      - stdout
-  network:
-    level: warn
-    appenders:
-      - stdout
-  shutdown:
-    level: warn
-    appenders:
-      - stdout
-
   librdkafka:
     level: warn
     appenders:
