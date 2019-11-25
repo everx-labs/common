@@ -10,13 +10,13 @@ appenders:
 
   logfile:
     kind: file
-    path: "log/output.log"
+    path: "target/log/output.log"
     encoder:
       pattern: "{d} - {l}: {m}{n}"
 
   tvm_logfile:
     kind: file
-    path: "log/tvm.log"
+    path: "target/log/tvm.log"
     encoder:
       pattern: "{m}{n}"
 
