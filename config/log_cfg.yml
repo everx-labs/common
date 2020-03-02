@@ -6,7 +6,7 @@ appenders:
   stdout:
     kind: console
     encoder:
-      pattern: "{l} [{t}] {I}: {m}{n}"
+      pattern: "{d(%s.%f)} {l} [{h({t})}] {I}: {m}{n}"
 
   logfile:
     kind: file
