@@ -8,6 +8,11 @@ appenders:
     encoder:
       pattern: "{d(%s.%f)} {l} [{h({t})}] {I}: {m}{n}"
 
+  stdout_ref:
+    kind: console
+    encoder:
+      pattern: "{f}:{L} {l} [{h({t})}] {I}: {m}{n}"
+
   logfile:
     kind: file
     path: "target/log/output.log"
@@ -60,3 +65,8 @@ loggers:
     level: warn
     appenders:
       - stdout
+
+  validator:
+    level: debug
+    appenders:
+      - stdout_ref
