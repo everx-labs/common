@@ -38,6 +38,12 @@ loggers:
     appenders:
       - stdout
 
+  # dht messages
+  dht:
+    level: debug
+    appenders:
+      - stdout
+
   # block messages
   ton_block:
     level: debug
