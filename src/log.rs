@@ -5,7 +5,3 @@ fn init_log(config: &str) {
     }
 }
 
-pub fn init_test_log() {
-    init_log("./common/config/log_cfg.yml")
-}
-
