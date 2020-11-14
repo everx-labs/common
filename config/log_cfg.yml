@@ -49,6 +49,12 @@ loggers:
     appenders:
       - stdout
 
+  # rldp messages
+  rldp:
+    level: debug
+    appenders:
+      - stdout
+
   # block messages
   ton_block:
     level: debug
