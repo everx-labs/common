@@ -49,6 +49,12 @@ loggers:
     appenders:
       - stdout
 
+  # overlay messages
+  overlay:
+    level: debug
+    appenders:
+      - stdout
+
   # block messages
   ton_block:
     level: debug
