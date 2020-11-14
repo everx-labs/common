@@ -13,13 +13,14 @@ pub async fn get_test_config_path(prefix: &str, ip: &str) -> Result<String> {
         Some(socket.ip())
     };
     if let Some(IpAddr::V4(ip)) = ip {
-        let mut config = String::from(prefix);
-        config.push('_');
-        config.push_str(ip.to_string().as_str());
-        config.push('_');
-        config.push_str(socket.port().to_string().as_str());
-        config.push_str(".json");
-        Ok(config)
+        Ok(
+            format!(
+                "{}_{}_{}.json", 
+                prefix, 
+                ip.to_string().as_str(), 
+                socket.port().to_string().as_str()
+            )
+        )
     } else {
         fail!("Cannot obtain own external IP address")
     }
