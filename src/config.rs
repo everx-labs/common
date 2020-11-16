@@ -1,4 +1,5 @@
-use adnl::{common::KeyOption, node::AdnlNodeConfig};
+use adnl::{from_slice, common::KeyOption, node::AdnlNodeConfig};
+use sha2::Digest;
 use std::{fs::{File, read_to_string}, io::Write, net::{IpAddr, SocketAddr}, path::Path};
 use ton_types::{fail, Result};
 
@@ -28,17 +29,41 @@ pub async fn get_test_config_path(prefix: &str, ip: &str) -> Result<String> {
 
 // Is used only for protocol tests
 #[allow(dead_code)]
-pub async fn get_adnl_config(prefix: &str, ip: &str, tags: Vec<usize>) -> Result<AdnlNodeConfig> {
+pub async fn get_adnl_config(
+    prefix: &str, 
+    ip: &str, 
+    tags: Vec<usize>,
+    deterministic: bool
+) -> Result<AdnlNodeConfig> {
     let config = get_test_config_path(prefix, ip).await?;
     let config = if Path::new(config.as_str()).exists() {
         let config = read_to_string(config)?;
         AdnlNodeConfig::from_json(config.as_str(), true)?
     } else {
-        let (json, bin) = AdnlNodeConfig::with_ip_address_and_key_type(
-            ip, 
-            KeyOption::KEY_ED25519, 
-            tags
-        )?;
+        let (json, bin) = if deterministic {
+            let mut keys = Vec::new();
+            let mut hash = sha2::Sha256::new();
+            hash.input(ip.as_bytes());
+            for tag in tags {
+                let mut hash = hash.clone();
+                hash.input(&tag.to_be_bytes());
+                let key = hash.result();
+                let key = key.as_slice();
+                let key = from_slice!(key, 32);
+                keys.push((key, tag));
+            }
+            AdnlNodeConfig::from_ip_address_and_private_keys(
+                ip, 
+                KeyOption::KEY_ED25519, 
+                keys
+            )?
+        } else {
+            AdnlNodeConfig::with_ip_address_and_key_type(
+                ip, 
+                KeyOption::KEY_ED25519, 
+                tags
+            )?
+        };
         File::create(config.as_str())?.write_all(
             serde_json::to_string_pretty(&json)?.as_bytes()
         )?;
