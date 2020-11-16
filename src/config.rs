@@ -26,6 +26,8 @@ pub async fn get_test_config_path(prefix: &str, ip: &str) -> Result<String> {
     }
 } 
 
+// Is used only for protocol tests
+#[allow(dead_code)]
 pub async fn get_adnl_config(prefix: &str, ip: &str, tags: Vec<usize>) -> Result<AdnlNodeConfig> {
     let config = get_test_config_path(prefix, ip).await?;
     let config = if Path::new(config.as_str()).exists() {
