@@ -1,4 +1,4 @@
-use adnl::{from_slice, common::KeyOption, node::AdnlNodeConfig};
+use adnl::{from_slice, common::KeyOption, node::{AdnlNodeConfig, AdnlNodeConfigJson}};
 use sha2::Digest;
 use std::{fs::{File, read_to_string}, io::Write, net::{IpAddr, SocketAddr}, path::Path};
 use ton_types::{fail, Result};
@@ -27,6 +27,37 @@ pub async fn get_test_config_path(prefix: &str, ip: &str) -> Result<String> {
     }
 } 
 
+pub fn generate_adnl_configs(
+    ip: &str, 
+    tags: Vec<usize>,
+    deterministic: bool
+) -> Result<(AdnlNodeConfigJson, AdnlNodeConfig)> {
+    if deterministic {
+        let mut keys = Vec::new();
+        let mut hash = sha2::Sha256::new();
+        hash.input(ip.as_bytes());
+        for tag in tags {
+            let mut hash = hash.clone();
+            hash.input(&tag.to_be_bytes());
+            let key = hash.result();
+            let key = key.as_slice();
+            let key = from_slice!(key, 32);
+            keys.push((key, tag));
+        }
+        AdnlNodeConfig::from_ip_address_and_private_keys(
+            ip, 
+            KeyOption::KEY_ED25519, 
+            keys
+        )
+    } else {
+        AdnlNodeConfig::with_ip_address_and_key_type(
+            ip, 
+            KeyOption::KEY_ED25519, 
+            tags
+        )
+    }
+}
+
 // Is used only for protocol tests
 #[allow(dead_code)]
 pub async fn get_adnl_config(
@@ -40,30 +71,7 @@ pub async fn get_adnl_config(
         let config = read_to_string(config)?;
         AdnlNodeConfig::from_json(config.as_str(), true)?
     } else {
-        let (json, bin) = if deterministic {
-            let mut keys = Vec::new();
-            let mut hash = sha2::Sha256::new();
-            hash.input(ip.as_bytes());
-            for tag in tags {
-                let mut hash = hash.clone();
-                hash.input(&tag.to_be_bytes());
-                let key = hash.result();
-                let key = key.as_slice();
-                let key = from_slice!(key, 32);
-                keys.push((key, tag));
-            }
-            AdnlNodeConfig::from_ip_address_and_private_keys(
-                ip, 
-                KeyOption::KEY_ED25519, 
-                keys
-            )?
-        } else {
-            AdnlNodeConfig::with_ip_address_and_key_type(
-                ip, 
-                KeyOption::KEY_ED25519, 
-                tags
-            )?
-        };
+        let (json, bin) = generate_adnl_configs(ip, tags, deterministic)?;
         File::create(config.as_str())?.write_all(
             serde_json::to_string_pretty(&json)?.as_bytes()
         )?;
@@ -71,4 +79,3 @@ pub async fn get_adnl_config(
     };
     Ok(config)
 }
-
