@@ -88,3 +88,21 @@ loggers:
     level: debug
     appenders:
       - stdout_ref
+
+  # storage messages
+  storage:
+    level: debug
+    appenders:
+      - stdout
+
+  # boot messages
+  boot:
+    level: info
+    appenders:
+      - stdout
+      
+  # sync messages
+  sync:
+    level: debug
+    appenders:
+      - stdout
