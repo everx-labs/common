@@ -6,7 +6,7 @@ appenders:
   stdout:
     kind: console
     encoder:
-      pattern: "{d(%s.%f)} {l} [{h({t})}] {I}: {m}{n}"
+      pattern: "{d(%Y-%m-%d %H:%M:%S.%f)} {l} [{h({t})}] {I}: {m}{n}"
 
   stdout_ref:
     kind: console
@@ -15,76 +15,73 @@ appenders:
 
   logfile:
     kind: file
-    path: "target/log/output.log"
+    path: "/ton-node/logs/output.log"
     encoder:
-      pattern: "{d} - {l}: {m}{n}"
+      pattern: "{d(%Y-%m-%d %H:%M:%S.%f)} {l} [{h({t})}] {I}: {m}{n}"
 
-  tvm_logfile:
-    kind: file
-    path: "target/log/tvm.log"
+  rolling_logfile:
+    kind: rolling_file
     encoder:
-      pattern: "{m}{n}"
+      pattern: "{d(%Y-%m-%d %H:%M:%S.%f)} {l} [{h({t})}] {I}: {m}{n}"
+    path: /ton-node/logs/output.log
+    policy:
+      kind: compound
+      trigger:
+        kind: size
+        limit: 100 gb
+      roller:
+        kind: fixed_window
+        pattern: '/ton-node/logs/output_{}.log'
+        base: 1
+        count: 1
 
 root:
-  level: debug
+  level: error
   appenders:
-    - logfile
+    - rolling_logfile
 
 loggers:
   # node messages
-  node:
-    level: debug
-    appenders:
-      - stdout
+  ton_node:
+    level: info
+  boot:
+    level: info
+  sync:
+    level: info
 
   # adnl messages
   adnl:
-    level: debug
-    appenders:
-      - stdout
+    level: error
 
-  # dht messages
-  dht:
-    level: debug
-    appenders:
-      - stdout
-
-  # overlay messages
   overlay:
-    level: debug
-    appenders:
-      - stdout
+    level: error
 
-  # rldp messages
   rldp:
-    level: debug
-    appenders:
-      - stdout
+    level: error
+
+  dht:
+    level: error
 
   # block messages
   ton_block:
-    level: debug
-    appenders:
-      - stdout
+    level: off
 
   # block messages
   executor:
-    level: debug
-    appenders:
-      - stdout      
+    level: off
 
   # tvm messages
   tvm:
-    level: trace
-    appenders:
-      - tvm_logfile
+    level: off
 
   librdkafka:
-    level: warn
-    appenders:
-      - stdout
+    level: error
 
   validator:
-    level: debug
-    appenders:
-      - stdout_ref
+    level: info
+
+  catchain:
+    level: info
+
+  validator_session:
+    level: info
