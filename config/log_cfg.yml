@@ -57,7 +57,7 @@ loggers:
     level: error
 
   rldp:
-    level: error
+    level: warn
 
   dht:
     level: error
