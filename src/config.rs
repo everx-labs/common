@@ -3,27 +3,34 @@ use sha2::Digest;
 use std::{fs::{File, read_to_string}, io::Write, net::{IpAddr, SocketAddr}, path::Path};
 use ton_types::{fail, Result};
 
-pub async fn get_test_config_path(prefix: &str, ip: &str) -> Result<String> {
-    let socket = ip.parse::<SocketAddr>()?;
-    let ip = if socket.ip().is_unspecified() {
-        external_ip::ConsensusBuilder::new()
+pub async fn resolve_ip(ip: &str) -> Result<SocketAddr> {
+    let mut ret = ip.parse::<SocketAddr>()?;
+    if ret.ip().is_unspecified() {
+        let ip = external_ip::ConsensusBuilder::new()
             .add_sources(external_ip::get_http_sources::<external_ip::Sources>())
             .build()
-            .get_consensus().await
-    } else {
-        Some(socket.ip())
-    };
-    if let Some(IpAddr::V4(ip)) = ip {
+            .get_consensus().await;
+        if let Some(IpAddr::V4(ip)) = ip {
+            ret.set_ip(IpAddr::V4(ip))
+        } else {
+            fail!("Cannot obtain own external IP address")
+        }
+    }
+    Ok(ret)
+}
+
+pub fn get_test_config_path(prefix: &str, addr: SocketAddr) -> Result<String> {
+    if let IpAddr::V4(ip) = addr.ip() {
         Ok(
             format!(
                 "{}_{}_{}.json", 
                 prefix, 
                 ip.to_string().as_str(), 
-                socket.port().to_string().as_str()
+                addr.port().to_string().as_str()
             )
         )
     } else {
-        fail!("Cannot obtain own external IP address")
+        fail!("Cannot generate config path for IP address that is not V4")
     }
 } 
 
@@ -66,7 +73,8 @@ pub async fn get_adnl_config(
     tags: Vec<usize>,
     deterministic: bool
 ) -> Result<AdnlNodeConfig> {
-    let config = get_test_config_path(prefix, ip).await?;
+    let resolved_ip = resolve_ip(ip).await?;
+    let config = get_test_config_path(prefix, resolved_ip)?;
     let config = if Path::new(config.as_str()).exists() {
         let config = read_to_string(config)?;
         AdnlNodeConfig::from_json(config.as_str(), true)?
