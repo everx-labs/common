@@ -19,7 +19,7 @@ pub async fn resolve_ip(ip: &str) -> Result<SocketAddr> {
     Ok(ret)
 }
 
-pub fn get_test_config_path(prefix: &str, addr: SocketAddr) -> Result<String> {
+pub fn get_test_config_path(prefix: &str, addr: &SocketAddr) -> Result<String> {
     if let IpAddr::V4(ip) = addr.ip() {
         Ok(
             format!(
@@ -35,14 +35,14 @@ pub fn get_test_config_path(prefix: &str, addr: SocketAddr) -> Result<String> {
 } 
 
 pub fn generate_adnl_configs(
-    ip: &str, 
+    ip: &str,
     tags: Vec<usize>,
-    deterministic: bool
+    addr: Option<SocketAddr>
 ) -> Result<(AdnlNodeConfigJson, AdnlNodeConfig)> {
-    if deterministic {
+    if let Some(addr) = addr {
         let mut keys = Vec::new();
         let mut hash = sha2::Sha256::new();
-        hash.input(ip.as_bytes());
+        hash.input(addr.to_string().as_bytes());
         for tag in tags {
             let mut hash = hash.clone();
             hash.input(&tag.to_be_bytes());
@@ -74,12 +74,17 @@ pub async fn get_adnl_config(
     deterministic: bool
 ) -> Result<AdnlNodeConfig> {
     let resolved_ip = resolve_ip(ip).await?;
-    let config = get_test_config_path(prefix, resolved_ip)?;
+    let config = get_test_config_path(prefix, &resolved_ip)?;
     let config = if Path::new(config.as_str()).exists() {
         let config = read_to_string(config)?;
         AdnlNodeConfig::from_json(config.as_str(), true)?
     } else {
-        let (json, bin) = generate_adnl_configs(ip, tags, deterministic)?;
+        let resolved_ip = if deterministic {
+            Some(resolved_ip)
+        } else {
+            None
+        };
+        let (json, bin) = generate_adnl_configs(ip, tags, resolved_ip)?;
         File::create(config.as_str())?.write_all(
             serde_json::to_string_pretty(&json)?.as_bytes()
         )?;
