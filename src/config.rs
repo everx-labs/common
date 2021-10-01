@@ -1,4 +1,4 @@
-use adnl::{from_slice, common::KeyOption, node::{AdnlNodeConfig, AdnlNodeConfigJson}};
+use adnl::{common::KeyOption, node::{AdnlNodeConfig, AdnlNodeConfigJson}};
 use sha2::Digest;
 use std::{fs::{File, read_to_string}, io::Write, net::{IpAddr, SocketAddr}, path::Path};
 use ton_types::{fail, Result};
@@ -46,9 +46,7 @@ pub fn generate_adnl_configs(
         for tag in tags {
             let mut hash = hash.clone();
             hash.input(&tag.to_be_bytes());
-            let key = hash.result();
-            let key = key.as_slice();
-            let key = from_slice!(key, 32);
+            let key = hash.result().into();
             keys.push((key, tag));
         }
         AdnlNodeConfig::from_ip_address_and_private_keys(
