@@ -42,11 +42,11 @@ pub fn generate_adnl_configs(
     if let Some(addr) = addr {
         let mut keys = Vec::new();
         let mut hash = sha2::Sha256::new();
-        hash.input(addr.to_string().as_bytes());
+        hash.update(addr.to_string().as_bytes());
         for tag in tags {
             let mut hash = hash.clone();
-            hash.input(&tag.to_be_bytes());
-            let key = hash.result();
+            hash.update(&tag.to_be_bytes());
+            let key = hash.finalize();
             let key = key.as_slice();
             let key = from_slice!(key, 32);
             keys.push((key, tag));
