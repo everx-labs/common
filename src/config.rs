@@ -51,13 +51,13 @@ pub fn generate_adnl_configs(
         }
         AdnlNodeConfig::from_ip_address_and_private_keys(
             ip, 
-            Ed25519KeyOption::KEY_ED25519,
+            Ed25519KeyOption::KEY_TYPE,
             keys
         )
     } else {
         AdnlNodeConfig::with_ip_address_and_key_type(
             ip, 
-            Ed25519KeyOption::KEY_ED25519,
+            Ed25519KeyOption::KEY_TYPE,
             tags
         )
     }
