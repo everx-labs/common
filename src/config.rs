@@ -41,10 +41,10 @@ pub fn generate_adnl_configs(
 ) -> Result<(AdnlNodeConfigJson, AdnlNodeConfig)> {
     if let Some(addr) = addr {
         let mut keys = Vec::new();
-        let addr = addr.to_string().as_bytes();
+        let addr = addr.to_string();
         for tag in tags {
             let mut data = Vec::new();
-            data.extend_from_slice(addr);
+            data.extend_from_slice(&addr.as_bytes());
             data.extend_from_slice(&tag.to_be_bytes());
             let key: [u8; 32] = sha256_digest(&data);
             keys.push((key, tag));
