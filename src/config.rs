@@ -1,6 +1,6 @@
-use adnl::{common::KeyOption, node::{AdnlNodeConfig, AdnlNodeConfigJson}};
-use sha2::Digest;
-use std::{fs::{File, read_to_string}, io::Write, net::{IpAddr, SocketAddr}, path::Path};
+use adnl::node::{AdnlNodeConfig, AdnlNodeConfigJson};
+use ever_crypto::{Ed25519KeyOption, KeyOption, sha256_digest};
+use std::{convert::TryInto, fs::{File, read_to_string}, io::Write, net::{IpAddr, SocketAddr}, path::Path};
 use ton_types::{fail, Result};
 
 pub async fn resolve_ip(ip: &str) -> Result<SocketAddr> {
@@ -41,23 +41,23 @@ pub fn generate_adnl_configs(
 ) -> Result<(AdnlNodeConfigJson, AdnlNodeConfig)> {
     if let Some(addr) = addr {
         let mut keys = Vec::new();
-        let mut hash = sha2::Sha256::new();
-        hash.update(addr.to_string().as_bytes());
+        let addr = addr.to_string().as_bytes();
         for tag in tags {
-            let mut hash = hash.clone();
-            hash.update(&tag.to_be_bytes());
-            let key: [u8; 32] = hash.finalize().into();
+            let mut data = Vec::new();
+            data.extend_from_slice(addr);
+            data.extend_from_slice(&tag.to_be_bytes());
+            let key: [u8; 32] = sha256_digest(&data);
             keys.push((key, tag));
         }
         AdnlNodeConfig::from_ip_address_and_private_keys(
             ip, 
-            KeyOption::KEY_ED25519, 
+            Ed25519KeyOption::KEY_TYPE,
             keys
         )
     } else {
         AdnlNodeConfig::with_ip_address_and_key_type(
             ip, 
-            KeyOption::KEY_ED25519, 
+            Ed25519KeyOption::KEY_TYPE,
             tags
         )
     }
