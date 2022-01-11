@@ -1,5 +1,5 @@
 use adnl::node::{AdnlNodeConfig, AdnlNodeConfigJson};
-use ever_crypto::{Ed25519KeyOption, KeyOption, sha256_digest};
+use ever_crypto::{Ed25519KeyOption, sha256_digest};
 use std::{convert::TryInto, fs::{File, read_to_string}, io::Write, net::{IpAddr, SocketAddr}, path::Path};
 use ton_types::{fail, Result};
 
