@@ -1,6 +1,6 @@
 use adnl::node::{AdnlNodeConfig, AdnlNodeConfigJson};
-use ever_crypto::{Ed25519KeyOption, KeyOption, sha256_digest};
-use std::{convert::TryInto, fs::{File, read_to_string}, io::Write, net::{IpAddr, SocketAddr}, path::Path};
+use ever_crypto::{Ed25519KeyOption, sha256_digest};
+use std::{fs::{File, read_to_string}, io::Write, net::{IpAddr, SocketAddr}, path::Path};
 use ton_types::{fail, Result};
 
 pub async fn resolve_ip(ip: &str) -> Result<SocketAddr> {
