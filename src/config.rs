@@ -1,5 +1,5 @@
 use adnl::node::{AdnlNodeConfig, AdnlNodeConfigJson};
-use ever_crypto::{Ed25519KeyOption, sha256_digest};
+use ever_crypto::sha256_digest;
 use std::{fs::{File, read_to_string}, io::Write, net::{IpAddr, SocketAddr}, path::Path};
 use ton_types::{fail, Result};
 
@@ -49,17 +49,9 @@ pub fn generate_adnl_configs(
             let key: [u8; 32] = sha256_digest(&data);
             keys.push((key, tag));
         }
-        AdnlNodeConfig::from_ip_address_and_private_keys(
-            ip, 
-            Ed25519KeyOption::KEY_TYPE,
-            keys
-        )
+        AdnlNodeConfig::from_ip_address_and_private_keys(ip, keys)
     } else {
-        AdnlNodeConfig::with_ip_address_and_key_type(
-            ip, 
-            Ed25519KeyOption::KEY_TYPE,
-            tags
-        )
+        AdnlNodeConfig::with_ip_address_and_private_key_tags(ip, tags)
     }
 }
 
