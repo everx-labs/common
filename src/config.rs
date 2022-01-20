@@ -67,7 +67,7 @@ pub async fn get_adnl_config(
     let config = get_test_config_path(prefix, &resolved_ip)?;
     let config = if Path::new(config.as_str()).exists() {
         let config = read_to_string(config)?;
-        AdnlNodeConfig::from_json(config.as_str(), true)?
+        AdnlNodeConfig::from_json(config.as_str())?
     } else {
         let resolved_ip = if deterministic {
             Some(resolved_ip)
