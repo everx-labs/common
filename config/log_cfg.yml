@@ -94,3 +94,6 @@ loggers:
 
   index:
     level: info
+
+telemetry:
+    level: debug
