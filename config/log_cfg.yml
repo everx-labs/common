@@ -85,3 +85,15 @@ loggers:
 
   validator_session:
     level: info
+
+  validate_query:
+    level: info
+
+  storage:
+    level: info
+
+  index:
+    level: info
+
+telemetry:
+    level: debug
