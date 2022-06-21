@@ -91,6 +91,3 @@ loggers:
 
   storage:
     level: info
-
-  index:
-    level: trace
