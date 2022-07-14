@@ -97,3 +97,6 @@ loggers:
 
   telemetry:
     level: debug
+
+  verificator:
+    level: trace
