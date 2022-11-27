@@ -1,7 +1,7 @@
 include!("./log.rs");
 
 pub fn init_test_log() {
-    init_log("./common/config/log_cfg.yml")
+    init_log("./common/config/log_cfg_debug.yml")
 }
 
 // Some tests are tokio::test that do not need explicit runtime
