@@ -7,9 +7,9 @@ fn init_log(config: &str) {
 }
 
 #[allow(dead_code)]
-fn simple_init_log(log_level: log::LevelFilter, output: Option<&str>) {
+fn init_log_without_config(log_level: log::LevelFilter, output_file: Option<&str>) {
     let encoder_boxed = Box::new(log4rs::encode::pattern::PatternEncoder::new("{m}"));
-    let config = if let Some(file) = output {
+    let config = if let Some(file) = output_file {
         let file = log4rs::append::file::FileAppender::builder()
             .encoder(encoder_boxed)
             .build(file)
