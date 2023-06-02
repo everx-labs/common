@@ -34,4 +34,10 @@ fn main() {
     println!("cargo:rustc-env=BUILD_GIT_DATE={}", commit_date);
     println!("cargo:rustc-env=BUILD_TIME={}", build_time);
     println!("cargo:rustc-env=BUILD_RUST_VERSION={}", rust_version);
+    println!("cargo:rustc-flags=-lrocksdb");
+    println!("cargo:rustc-flags=-lzstd");
+    println!("cargo:rustc-flags=-lz");
+    println!("cargo:rustc-flags=-llz4");
+    println!("cargo:rustc-flags=-lbz2");
+    println!("cargo:rustc-flags=-lsnappy");
 }
