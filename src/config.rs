@@ -1,6 +1,6 @@
 use adnl::node::{AdnlNodeConfig, AdnlNodeConfigJson};
 use std::{
-    ffi::OsString, fs::{File, read_to_string}, io::Write, net::{IpAddr, SocketAddr}, 
+    env, ffi::OsString, fs::{File, read_to_string}, io::Write, net::{IpAddr, SocketAddr}, 
     path::PathBuf
 };
 use ton_types::{fail, sha256_digest, Result};
