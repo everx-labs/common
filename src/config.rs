@@ -5,6 +5,20 @@ use std::{
 };
 use ton_types::{fail, sha256_digest, Result};
 
+fn configure_ip(template: &str, default_port: &str) -> String {
+    let port = env::var(ENV_VAR_PORT).unwrap_or_else(|_| default_port.to_string());
+    let Some(pos) = template.find(":") else {
+        panic!("Wrong IP template {}", template)
+    };
+    let port: u16 = port.parse()
+        .expect(&format!("Wrong port value {}", port));
+    let offset: u16 = template[pos + 1..].parse()
+        .expect(&format!("Wrong port in template {}", template)); 
+    let ret = format!("{}:{}", &template[..pos], port + offset);
+    println!("\nUsing {} local address", ret);
+    ret
+}
+
 pub async fn resolve_ip(ip: &str) -> Result<SocketAddr> {
     let mut ret = ip.parse::<SocketAddr>()?;
     if ret.ip().is_unspecified() {
