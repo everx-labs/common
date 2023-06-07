@@ -5,6 +5,8 @@ use std::{
 };
 use ton_types::{fail, sha256_digest, Result};
 
+const ENV_VAR_PORT: &str = "BASE_PORT";
+
 fn configure_ip(template: &str, default_port: &str) -> String {
     let port = env::var(ENV_VAR_PORT).unwrap_or_else(|_| default_port.to_string());
     let Some(pos) = template.find(":") else {
