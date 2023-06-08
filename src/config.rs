@@ -7,8 +7,8 @@ use ton_types::{fail, sha256_digest, Result};
 
 const ENV_VAR_PORT: &str = "BASE_PORT";
 
-fn configure_ip(template: &str, default_port: &str) -> String {
-    let port = env::var(ENV_VAR_PORT).unwrap_or_else(|_| default_port.to_string());
+fn configure_ip(template: &str, default_port: u16) -> String {
+    let port = env::var(ENV_VAR_PORT).unwrap_or_else(|_| format!("{}", default_port));
     let Some(pos) = template.find(":") else {
         panic!("Wrong IP template {}", template)
     };
