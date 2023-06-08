@@ -7,7 +7,7 @@ use ton_types::{fail, sha256_digest, Result};
 
 const ENV_VAR_PORT: &str = "BASE_PORT";
 
-fn configure_ip(template: &str, default_port: u16) -> String {
+pub fn configure_ip(template: &str, default_port: u16) -> String {
     let port = env::var(ENV_VAR_PORT).unwrap_or_else(|_| format!("{}", default_port));
     let Some(pos) = template.find(":") else {
         panic!("Wrong IP template {}", template)
@@ -100,8 +100,6 @@ pub fn generate_adnl_configs(
     }
 }
 
-// Is used only for protocol tests
-#[allow(dead_code)]
 pub async fn get_adnl_config(
     prefix: &str, 
     ip: &str, 
