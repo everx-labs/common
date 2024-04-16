@@ -3,7 +3,7 @@ use std::{
     env, ffi::OsString, fs::{File, read_to_string}, io::Write, net::{IpAddr, SocketAddr}, 
     path::PathBuf
 };
-use ton_types::{fail, sha256_digest, Result};
+use ever_block::{fail, sha256_digest, Result};
 
 const ENV_VAR_PORT: &str = "BASE_PORT";
 
