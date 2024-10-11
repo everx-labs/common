@@ -13,9 +13,9 @@ pub fn configure_ip(template: &str, default_port: u16) -> String {
         panic!("Wrong IP template {}", template)
     };
     let port: u16 = port.parse()
-        .expect(&format!("Wrong port value {}", port));
+        .unwrap_or_else(|err| panic!("Wrong port value {}: {}", port, err));
     let offset: u16 = template[pos + 1..].parse()
-        .expect(&format!("Wrong port in template {}", template)); 
+        .unwrap_or_else(|err| panic!("Wrong port in template {}: {}", template, err)); 
     let ret = format!("{}:{}", &template[..pos], port + offset);
     println!("\nUsing {} local address", ret);
     ret
